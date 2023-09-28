@@ -174,7 +174,7 @@ class InfraStack(TerraformStack):
         )
 
         GithubProvider(
-            scope=self, id="github_provider", token=self.config.github_token
+            scope=self, id="github_provider", token=self.config.token_for_github
         )
 
     def setup_github(self, api_key: str, workflow_template_path: Path):
@@ -183,7 +183,7 @@ class InfraStack(TerraformStack):
         actions_secret = ActionsSecret(
             scope=self,
             id_="github_actions_secret",
-            repository=self.config.github_repo_name,
+            repository=self.config.repo_name_github,
             secret_name="AZURE_STATIC_WEB_APP_API_TOKEN",
             plaintext_value=api_key,
         )
@@ -192,7 +192,7 @@ class InfraStack(TerraformStack):
         RepositoryFile(
             scope=self,
             id_="github_workflow_file",
-            repository=self.config.github_repo_name,
+            repository=self.config.repo_name_github,
             branch="main",
             file=".github/workflows/azure-static-web-app.yaml",
             content=file_contents,

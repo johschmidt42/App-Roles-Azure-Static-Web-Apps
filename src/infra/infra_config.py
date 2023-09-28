@@ -10,8 +10,8 @@ class InfraConfig(BaseSettings):
     backend_storage_account_name: str
     backend_storage_container_name: str
     backend_storage_key: str
-    github_token: str
-    github_repo_name: str
+    token_for_github: str
+    repo_name_github: str
     location: str = "West Europe"
 
     class Config:
