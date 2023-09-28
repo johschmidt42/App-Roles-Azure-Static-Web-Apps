@@ -194,7 +194,7 @@ class InfraStack(TerraformStack):
             scope=self,
             id_="github_workflow_file",
             repository=self.config.repo_name_github,
-            branch=os.environ.get("GITHUB_REF##*/"),  # get current branch name for cicd
+            branch="cicd/infra",  # TODO: remaster to always push to current branch
             file=".github/workflows/azure-static-web-app.yaml",
             content=file_contents,
             commit_message="Add workflow (by terraform)",
