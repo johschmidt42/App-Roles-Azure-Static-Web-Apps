@@ -1,5 +1,6 @@
 #!/usr/bin/env python
 import json
+import os
 from pathlib import Path
 
 from azapi.provider import AzapiProvider
@@ -193,7 +194,7 @@ class InfraStack(TerraformStack):
             scope=self,
             id_="github_workflow_file",
             repository=self.config.repo_name_github,
-            branch="main",
+            branch=os.environ.get("GITHUB_REF##*/"),  # get current branch name for cicd
             file=".github/workflows/azure-static-web-app.yaml",
             content=file_contents,
             commit_message="Add workflow (by terraform)",
