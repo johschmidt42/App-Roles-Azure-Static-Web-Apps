@@ -1,0 +1,60 @@
+{
+  "identityProvider": "aad",
+  "userId": "b6ec0af3-0216-4021-91f6-db9d648337e5",
+  "userDetails": "some.name@email.io",
+  "claims": [
+    {
+      "typ": "aud",
+      "val": "be991e72-f3de-491d-bbdc-2a79c1ca6794"
+    },
+    {
+      "typ": "iss",
+      "val": "https://login.microsoftonline.com/5bad5c16-7d4c-4ae9-96ad-8da8d3d003d7/v2.0"
+    },
+    {
+      "typ": "iat",
+      "val": "1694252205"
+    },
+    {
+      "typ": "exp",
+      "val": "1694256105"
+    },
+    {
+      "typ": "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress",
+      "val": "some.name@email.io"
+    },
+    {
+      "typ": "name",
+      "val": "Johannes Schmidt"
+    },
+    {
+      "typ": "http://schemas.microsoft.com/identity/claims/objectidentifier",
+      "val": "b6ec0af3-0216-4021-91f6-db9d648337e5"
+    },
+    {
+      "typ": "preferred_username",
+      "val": "johannes.schmidt@dmesh.io"
+    },
+    {
+      "typ": "http://schemas.microsoft.com/ws/2008/06/identity/claims/role",
+      "val": "writer"
+    },
+    {
+      "typ": "http://schemas.microsoft.com/ws/2008/06/identity/claims/role",
+      "val": "reader"
+    },
+    {
+      "typ": "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier",
+      "val": "d3f0498a-6eae-41cf-86de-585d9e5dcebb"
+    },
+    {
+      "typ": "http://schemas.microsoft.com/identity/claims/tenantid",
+      "val": "f96efa2a-4c44-4209-8849-72755c842f43"
+    },
+    {
+      "typ": "ver",
+      "val": "2.0"
+    }
+  ],
+  "accessToken": "ey"
+}

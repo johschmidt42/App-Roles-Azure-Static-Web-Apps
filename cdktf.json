@@ -1,0 +1,15 @@
+{
+  "language": "python",
+  "app": "python3 src/infra/infra_code.py",
+  "projectId": "a6f9e506-f500-4dfc-9b93-d199a033efe6",
+  "sendCrashReports": "false",
+  "terraformProviders": [
+    "azure/azapi@~> 1.9"
+  ],
+  "terraformModules": [],
+  "codeMakerOutput": "imports",
+  "context": {
+    "excludeStackIdFromLogicalIds": "true",
+    "allowSepCharsInLogicalIds": "true"
+  }
+}
