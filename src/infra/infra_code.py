@@ -184,7 +184,7 @@ class InfraStack(TerraformStack):
         actions_secret = ActionsSecret(
             scope=self,
             id_="github_actions_secret",
-            repository=self.config.repo_name_github,
+            repository=self.config.github_repository_name,
             secret_name="AZURE_STATIC_WEB_APP_API_TOKEN",
             plaintext_value=api_key,
         )
@@ -193,7 +193,7 @@ class InfraStack(TerraformStack):
         RepositoryFile(
             scope=self,
             id_="github_workflow_file",
-            repository=self.config.repo_name_github,
+            repository=self.config.github_repository_name,
             branch="cicd/infra",  # TODO: remaster to always push to current branch
             file=".github/workflows/azure-static-web-app.yaml",
             content=file_contents,
