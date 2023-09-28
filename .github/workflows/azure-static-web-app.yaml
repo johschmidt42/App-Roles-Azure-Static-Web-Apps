@@ -46,7 +46,7 @@ jobs:
           TOKEN_FOR_GITHUB: ${{ secrets.TOKEN_FOR_GITHUB }}
           REPO_NAME_GITHUB: $GITHUB_REPOSITORY_NAME
         run: |
-          cdktf apply --auto-approve
+          PYTHONPATH="imports/" cdktf apply --auto-approve
       - name: Build And Deploy
         id: builddeploy
         uses: Azure/static-web-apps-deploy@v1
