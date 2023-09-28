@@ -44,6 +44,7 @@ jobs:
           TERRAFORM_ARM_CLIENT_ID: ${{ secrets.TERRAFORM_ARM_CLIENT_ID }}
           TERRAFORM_ARM_CLIENT_SECRET: ${{ secrets.TERRAFORM_ARM_CLIENT_SECRET }}
           TOKEN_FOR_GITHUB: ${{ secrets.TOKEN_FOR_GITHUB }}
+          REPO_NAME_GITHUB: $GITHUB_REPOSITORY_NAME
         run: |
           PYTHONPATH="imports/" cdktf apply --auto-approve
       - name: Build And Deploy
