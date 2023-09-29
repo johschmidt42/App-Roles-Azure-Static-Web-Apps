@@ -36,10 +36,6 @@ jobs:
         run: |
           cdktf provider add azure/azapi
           cdktf get
-      - name: test env vars
-        run: |
-          echo $ARM_SUBSCRIPTION_ID
-          echo $ARM_TENANT_ID
       - name: Apply infra changes
         env:
           ARM_SUBSCRIPTION_ID: ${{ secrets.ARM_SUBSCRIPTION_ID }}
@@ -49,8 +45,9 @@ jobs:
           TERRAFORM_ARM_CLIENT_SECRET: ${{ secrets.TERRAFORM_ARM_CLIENT_SECRET }}
           TOKEN_FOR_GITHUB: ${{ secrets.TOKEN_FOR_GITHUB }}
           BACKEND_STORAGE_ACCOUNT_NAME: $§{{ vars.BACKEND_STORAGE_ACCOUNT_NAME }}
-          BACKEND_STORAGE_CONTAINER_NAME: $§{{ vars.BACKEND_STORAGE_CONTAINER_NAME }}
-          RESOURCE_GROUP_NAME: $§{{ vars.RESOURCE_GROUP_NAME }}
+          BACKEND_STORAGE_CONTAINER_NAME: ${{ vars.BACKEND_STORAGE_CONTAINER_NAME }}
+          RESOURCE_GROUP_NAME: ${{ vars.RESOURCE_GROUP_NAME }}
+          GITHUB_REPOSITORY_NAME: ${{ github.event.repository.name }}
         run: |
           PYTHONPATH="imports/" cdktf apply --auto-approve
       - name: Build And Deploy
