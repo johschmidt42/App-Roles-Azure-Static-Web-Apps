@@ -1,5 +1,6 @@
 #!/usr/bin/env python
 import json
+import os
 from pathlib import Path
 
 from azapi.provider import AzapiProvider
@@ -174,7 +175,7 @@ class InfraStack(TerraformStack):
         )
 
         GithubProvider(
-            scope=self, id="github_provider", token=self.config.github_token
+            scope=self, id="github_provider", token=self.config.token_for_github
         )
 
     def setup_github(self, api_key: str, workflow_template_path: Path):
@@ -183,7 +184,7 @@ class InfraStack(TerraformStack):
         actions_secret = ActionsSecret(
             scope=self,
             id_="github_actions_secret",
-            repository=self.config.github_repo_name,
+            repository=self.config.github_repository_name,
             secret_name="AZURE_STATIC_WEB_APP_API_TOKEN",
             plaintext_value=api_key,
         )
@@ -192,8 +193,8 @@ class InfraStack(TerraformStack):
         RepositoryFile(
             scope=self,
             id_="github_workflow_file",
-            repository=self.config.github_repo_name,
-            branch="main",
+            repository=self.config.github_repository_name,
+            branch="cicd/infra",  # TODO: remaster to always push to current branch
             file=".github/workflows/azure-static-web-app.yaml",
             content=file_contents,
             commit_message="Add workflow (by terraform)",

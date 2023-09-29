@@ -37,24 +37,24 @@ jobs:
           cdktf get
       - name: Apply infra changes
         env:
-          ARM_SUBSCRIPTION_ID: $${{ secrets.ARM_SUBSCRIPTION_ID }}
-          ARM_TENANT_ID: $${{ secrets.ARM_TENANT_ID }}
-          BACKEND_STORAGE_KEY: $${{ secrets.BACKEND_STORAGE_KEY }}
-          TERRAFORM_ARM_CLIENT_ID: $${{ secrets.TERRAFORM_ARM_CLIENT_ID }}
-          TERRAFORM_ARM_CLIENT_SECRET: $${{ secrets.TERRAFORM_ARM_CLIENT_SECRET }}
-          TOKEN_FOR_GITHUB: $${{ secrets.TOKEN_FOR_GITHUB }}
-          BACKEND_STORAGE_ACCOUNT_NAME: $${{ vars.BACKEND_STORAGE_ACCOUNT_NAME }}
-          BACKEND_STORAGE_CONTAINER_NAME: $${{ vars.BACKEND_STORAGE_CONTAINER_NAME }}
-          RESOURCE_GROUP_NAME: $${{ vars.RESOURCE_GROUP_NAME }}
-          GITHUB_REPOSITORY_NAME: $${{ github.event.repository.name }}
+          ARM_SUBSCRIPTION_ID: ${{ secrets.ARM_SUBSCRIPTION_ID }}
+          ARM_TENANT_ID: ${{ secrets.ARM_TENANT_ID }}
+          BACKEND_STORAGE_KEY: ${{ secrets.BACKEND_STORAGE_KEY }}
+          TERRAFORM_ARM_CLIENT_ID: ${{ secrets.TERRAFORM_ARM_CLIENT_ID }}
+          TERRAFORM_ARM_CLIENT_SECRET: ${{ secrets.TERRAFORM_ARM_CLIENT_SECRET }}
+          TOKEN_FOR_GITHUB: ${{ secrets.TOKEN_FOR_GITHUB }}
+          BACKEND_STORAGE_ACCOUNT_NAME: ${{ vars.BACKEND_STORAGE_ACCOUNT_NAME }}
+          BACKEND_STORAGE_CONTAINER_NAME: ${{ vars.BACKEND_STORAGE_CONTAINER_NAME }}
+          RESOURCE_GROUP_NAME: ${{ vars.RESOURCE_GROUP_NAME }}
+          GITHUB_REPOSITORY_NAME: ${{ github.event.repository.name }}
         run: |
           PYTHONPATH="imports/" cdktf apply --auto-approve
       - name: Build And Deploy
         id: builddeploy
         uses: Azure/static-web-apps-deploy@v1
         with:
-          azure_static_web_apps_api_token: $${{ secrets.AZURE_STATIC_WEB_APP_API_TOKEN }}
-          repo_token: $${{ secrets.GITHUB_TOKEN }} # Used for Github integrations (i.e. PR comments)
+          azure_static_web_apps_api_token: ${{ secrets.AZURE_STATIC_WEB_APP_API_TOKEN }}
+          repo_token: ${{ secrets.GITHUB_TOKEN }} # Used for Github integrations (i.e. PR comments)
           action: 'upload'
           ###### Repository/Build Configurations - These values can be configured to match your app requirements. ######
           # For more information regarding Static Web App workflow configurations, please visit: https://aka.ms/swaworkflowconfig
@@ -72,5 +72,5 @@ jobs:
         id: closepullrequest
         uses: Azure/static-web-apps-deploy@v1
         with:
-          azure_static_web_apps_api_token: $${{ secrets.AZURE_STATIC_WEB_APP_API_TOKEN }}
+          azure_static_web_apps_api_token: ${{ secrets.AZURE_STATIC_WEB_APP_API_TOKEN }}
           action: 'close'
