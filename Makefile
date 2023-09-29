@@ -8,5 +8,5 @@ apply:
 	PYTHONPATH="imports/" cdktf apply
 
 destroy:
-	PYTHONPATH="imports/" cdkts destroy
+	PYTHONPATH="imports/" cdktf destroy
 
