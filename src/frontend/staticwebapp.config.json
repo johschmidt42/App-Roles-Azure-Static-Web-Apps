@@ -3,14 +3,12 @@
     {
       "route": "/api/user",
       "allowedRoles": [
-        "authenticated",
         "user"
       ]
     },
     {
       "route": "/api/admin",
       "allowedRoles": [
-        "authenticated",
         "admin"
       ]
     }
