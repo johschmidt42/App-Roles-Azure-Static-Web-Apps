@@ -20,7 +20,7 @@ jobs:
           submodules: true
       - name: Replace openIdIssuer Placeholder with TenantId
         run: |
-          sed  -i "s/{{AZURE_TENANT_ID}}/$ARM_TENANT_ID/g" src/frontend/staticwebapp.config.json
+          sed  -i "s/{{AZURE_TENANT_ID}}/${{ secrets.ARM_TENANT_ID }}/g" src/frontend/staticwebapp.config.json
           cat src/frontend/staticwebapp.config.json
       - name: Build And Deploy
         id: builddeploy
