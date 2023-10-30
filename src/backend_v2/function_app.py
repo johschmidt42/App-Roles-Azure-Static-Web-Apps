@@ -66,8 +66,8 @@ def user(req: HttpRequest):
     )
 
 
-@app.function_name(name="Admin")
-@app.route(route="administrator", methods=["GET"], auth_level=AuthLevel.ANONYMOUS)
+@app.function_name(name="Admin1")
+@app.route(route="admin", methods=["GET"], auth_level=AuthLevel.ANONYMOUS)
 def admin(req: HttpRequest):
     """
     Returns if role is admin
