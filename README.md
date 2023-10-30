@@ -26,7 +26,7 @@
    yet published to pypi and needs to be retrieved via terraform binding mechanism (
    see [here](https://discuss.hashicorp.com/t/is-it-already-possible-to-use-azapi-in-cdktf/43706) for more information).
    For that, the cdktf-cli (installed by npm) and the cdktf python package need to have the same version
-4. Create an azure service principal
+4. Create an azure service principal for infrastructure deployment
 5. Create a resource group in azure and grant the service principal contributor rights to it (the SP will be used by
    terraform and needs contributor rights for resource creation / management)
 6. create storage account and container within resource group (this will be used as remote backend for the terraform
@@ -37,14 +37,8 @@
 8. Run `cp .env-infra.example .env-infra` and fill all the configuration of `.env-infra` with data of steps from 3-6
 9. Deploy with `cdktf apply`
 
-### Further remarks
+### Further manual steps
 
-- the repository name in GitHub is specified in `src/infra/infra_config.py`. Change to your needs. The repository must
-  obviously exist and hold the code for deployment.
-- for templating the GitHub actions workflow, the file in `data/github_cicd_template.yaml` is used. As $ is also a
-  special command for compiled terraform, you have to escape it by exchanging it to $$.
+- You need to add two secrets to your github repository. Go to your GitHub repository -> Settings -> Secrets and Variables -> Actions and click on `new repository secret`. Name it `ARM_TENANT_ID` and enter the tenant uuid here. 
 
-### TODO:
-
-- add ignore parameter to not override parameter changes of ui by terraform (
-  look [here](https://itnext.io/how-and-when-to-ignore-lifecycle-changes-in-terraform-ed5bfb46e7ae))
+- Create another secret and name it `AZURE_STATIC_WEB_APP_API_TOKEN`. This is necessary so that github actions has access for webapp deployment. Go to your deployed static website resource in azure portal and then click on `manage deployment token` and copy the value and paste it into github.
