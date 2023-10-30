@@ -18,6 +18,9 @@ jobs:
       - uses: actions/checkout@v3
         with:
           submodules: true
+      - name: Replace openIdIssuer Placeholder with TenantId
+        run: |
+          sed  -i "s/{{AZURE_TENANT_ID}}/$ARM_TENANT_ID/g" src/frontend/staticwebapp.config.json
       - name: Build And Deploy
         id: builddeploy
         uses: Azure/static-web-apps-deploy@v1
