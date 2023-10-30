@@ -66,12 +66,12 @@ def user(req: HttpRequest):
     )
 
 
-@app.function_name(name="Admin")
-@app.route(route="admin", methods=["GET"], auth_level=AuthLevel.ANONYMOUS)
+@app.function_name(name="Admin2")
+@app.route(route="master", methods=["GET"], auth_level=AuthLevel.ANONYMOUS)
 def admin(req: HttpRequest):
     """
     Returns if role is admin
     """
     return HttpResponse(
-        body=json.dumps({"admin": True}), mimetype="application/json", status_code=200
+        body=json.dumps({"master": True}), mimetype="application/json", status_code=200
     )

@@ -7,7 +7,7 @@ const Admin = () => {
 
     useEffect(() => {
         async function getUserInfo() {
-            const response = await fetch('/api/admin');
+            const response = await fetch('/api/master');
             setAuthenticated(response.status === 200);
         }
 
