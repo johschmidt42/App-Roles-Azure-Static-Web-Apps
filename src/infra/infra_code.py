@@ -13,6 +13,9 @@ from cdktf_cdktf_provider_azuread.application import (
 from cdktf_cdktf_provider_azuread.application_password import (
     ApplicationPassword,
 )
+from cdktf_cdktf_provider_azurerm.log_analytics_workspace import LogAnalyticsWorkspace
+from cdktf_cdktf_provider_azurerm.application_insights import ApplicationInsights
+
 from cdktf_cdktf_provider_azuread.provider import AzureadProvider
 from cdktf_cdktf_provider_azuread.service_principal import ServicePrincipal
 from cdktf_cdktf_provider_azurerm.provider import (
@@ -48,6 +51,26 @@ class InfraStack(TerraformStack):
         )
 
         spa_domain: str = static_site.default_host_name
+
+        self.log_analytics_workspace = LogAnalyticsWorkspace(
+            scope=self,
+            id_="log_analytics_ws",
+            name="logAnalyticsWs",
+            resource_group_name=self.config.resource_group_name,
+            location=self.config.location,
+            sku="PerGB2018",
+        )
+
+        self.app_insights = ApplicationInsights(
+            scope=self,
+            id_="app_insights",
+            name="app_insights",
+            resource_group_name=self.config.resource_group_name,
+            location=self.config.location,
+            application_type="web",
+            workspace_id=self.log_analytics_workspace.id,
+            retention_in_days=30,
+        )
 
         aad_app_registration = Application(
             scope=self,
@@ -112,7 +135,7 @@ class InfraStack(TerraformStack):
                     "properties": {
                         "AZURE_CLIENT_ID": sp.application_id,
                         "AZURE_CLIENT_SECRET": aad_application_pw.value,
-                        "OPEN_ID_ISSUER": f"https://login.microsoftonline.com/{self.config.arm_tenant_id}/v2.0"
+                        "APPLICATIONINSIGHTS_CONNECTION_STRING": self.app_insights.connection_string
                     },
                     "kind": "appsettings",
                 }
