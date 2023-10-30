@@ -1,4 +1,5 @@
 name: Azure Static Web Apps CI/CD
+
 on:
   push:
     branches:
@@ -17,6 +18,37 @@ jobs:
       - uses: actions/checkout@v3
         with:
           submodules: true
+      - name: Set up Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: 3.9
+      - name: Install infra requirements
+        run: pip install -r requirements-infra.txt
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: 20
+      - name: Install CDK for Terraform
+        run: |
+          npm install -g cdktf-cli
+      - name: Add azapi terraform provider
+        run: |
+          cdktf provider add azure/azapi
+          cdktf get
+      - name: Apply infra changes
+        env:
+          ARM_SUBSCRIPTION_ID: ${{ secrets.ARM_SUBSCRIPTION_ID }}
+          ARM_TENANT_ID: ${{ secrets.ARM_TENANT_ID }}
+          BACKEND_STORAGE_KEY: ${{ secrets.BACKEND_STORAGE_KEY }}
+          TERRAFORM_ARM_CLIENT_ID: ${{ secrets.TERRAFORM_ARM_CLIENT_ID }}
+          TERRAFORM_ARM_CLIENT_SECRET: ${{ secrets.TERRAFORM_ARM_CLIENT_SECRET }}
+          TOKEN_FOR_GITHUB: ${{ secrets.TOKEN_FOR_GITHUB }}
+          BACKEND_STORAGE_ACCOUNT_NAME: ${{ vars.BACKEND_STORAGE_ACCOUNT_NAME }}
+          BACKEND_STORAGE_CONTAINER_NAME: ${{ vars.BACKEND_STORAGE_CONTAINER_NAME }}
+          RESOURCE_GROUP_NAME: ${{ vars.RESOURCE_GROUP_NAME }}
+          GITHUB_REPOSITORY_NAME: ${{ github.event.repository.name }}
+        run: |
+          PYTHONPATH="imports/" cdktf apply --auto-approve
       - name: Build And Deploy
         id: builddeploy
         uses: Azure/static-web-apps-deploy@v1
