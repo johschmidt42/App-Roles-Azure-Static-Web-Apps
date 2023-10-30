@@ -112,6 +112,7 @@ class InfraStack(TerraformStack):
                     "properties": {
                         "AZURE_CLIENT_ID": sp.application_id,
                         "AZURE_CLIENT_SECRET": aad_application_pw.value,
+                        "OPEN_ID_ISSUER": f"https://login.microsoftonline.com/{self.config.arm_tenant_id}/v2.0"
                     },
                     "kind": "appsettings",
                 }
@@ -166,7 +167,7 @@ class InfraStack(TerraformStack):
         )
 
         GithubProvider(
-            scope=self, id="github_provider", token=self.config.token_for_github
+            scope=self, id="github_provider", token=self.config.github_token
         )
 
     def setup_github(self, api_key: str):
