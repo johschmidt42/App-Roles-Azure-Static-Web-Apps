@@ -32,3 +32,7 @@
 
 - the repository name in github is specified in `src/infra/infra_config.py`. Change to your needs. The repository must obviously exist and hold the code for deployment.
 - for templating the github actions workflow, the file in `data/github_cicd_template.yaml` is used. As $ is also a special command for compiled terraform, you have to escape it by exchanging it to $$.
+
+### TODO:
+
+- add ignore parameter to not override parameter changes of ui by terraform (look [here](https://itnext.io/how-and-when-to-ignore-lifecycle-changes-in-terraform-ed5bfb46e7ae))
