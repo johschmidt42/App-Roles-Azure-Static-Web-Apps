@@ -10,14 +10,11 @@ from cdktf_cdktf_provider_azuread.application import (
     ApplicationAppRole,
     ApplicationWeb,
 )
-from cdktf_cdktf_provider_azuread.application_password import (
-    ApplicationPassword,
-)
-from cdktf_cdktf_provider_azurerm.log_analytics_workspace import LogAnalyticsWorkspace
-from cdktf_cdktf_provider_azurerm.application_insights import ApplicationInsights
-
+from cdktf_cdktf_provider_azuread.application_password import ApplicationPassword
 from cdktf_cdktf_provider_azuread.provider import AzureadProvider
 from cdktf_cdktf_provider_azuread.service_principal import ServicePrincipal
+from cdktf_cdktf_provider_azurerm.application_insights import ApplicationInsights
+from cdktf_cdktf_provider_azurerm.log_analytics_workspace import LogAnalyticsWorkspace
 from cdktf_cdktf_provider_azurerm.provider import (
     AzurermProvider,
     AzurermProviderFeatures,
@@ -25,34 +22,32 @@ from cdktf_cdktf_provider_azurerm.provider import (
 from cdktf_cdktf_provider_azurerm.static_site import StaticSite
 from cdktf_cdktf_provider_github.actions_secret import ActionsSecret
 from cdktf_cdktf_provider_github.provider import GithubProvider
-from cdktf_cdktf_provider_github.repository_file import RepositoryFile
 from constructs import Construct
-
 from infra_config import InfraConfig
 
-root_path = Path(__file__).parent.parent.parent
+root_path: Path = Path(__file__).parent.parent.parent
 
 
 class InfraStack(TerraformStack):
     def __init__(self, scope: Construct, config: InfraConfig, id_: str):
         super().__init__(scope, id_)
-        self.config = config
+        self.config: InfraConfig = config
 
         self.setup_providers_and_backend()
 
-        static_site = StaticSite(
+        static_site: StaticSite = StaticSite(
             scope=self,
             id_="mystaticsite",
             location=self.config.location,
             name="mystaticsite",
             resource_group_name=self.config.resource_group_name,
             sku_tier="Standard",
-            sku_size="Standard"
+            sku_size="Standard",
         )
 
         spa_domain: str = static_site.default_host_name
 
-        self.log_analytics_workspace = LogAnalyticsWorkspace(
+        self.log_analytics_workspace: LogAnalyticsWorkspace = LogAnalyticsWorkspace(
             scope=self,
             id_="log_analytics_ws",
             name="logAnalyticsWs",
@@ -61,7 +56,7 @@ class InfraStack(TerraformStack):
             sku="PerGB2018",
         )
 
-        self.app_insights = ApplicationInsights(
+        self.app_insights: ApplicationInsights = ApplicationInsights(
             scope=self,
             id_="app_insights",
             name="app_insights",
@@ -72,7 +67,7 @@ class InfraStack(TerraformStack):
             retention_in_days=30,
         )
 
-        aad_app_registration = Application(
+        aad_application: Application = Application(
             scope=self,
             id_="spa_aad_app_johannes",
             display_name="spa_aad_app_johannes",
@@ -103,18 +98,19 @@ class InfraStack(TerraformStack):
             depends_on=[static_site],
         )
 
-        aad_application_pw = ApplicationPassword(
+        aad_application_pw: ApplicationPassword = ApplicationPassword(
             scope=self,
             id_="application_pw",
-            application_object_id=aad_app_registration.object_id,
+            application_object_id=aad_application.object_id,
             display_name="app pw",
         )
 
-        # tags for enterprise application because we manage user access roles in enterprise application
+        # tags are required for the enterprise application
+        # because we manage user access to app roles in the enterprise application
         sp = ServicePrincipal(
             scope=self,
             id_="service_principal",
-            application_id=aad_app_registration.application_id,
+            application_id=aad_application.application_id,
             app_role_assignment_required=True,
             tags=[
                 "AppServiceIntegratedApp",
@@ -122,8 +118,9 @@ class InfraStack(TerraformStack):
             ],
         )
 
-        # for configuring application settings of static web page, we need azapi provider
-        # https://stackoverflow.com/questions/70081845/azure-static-web-app-application-settings-using-terraform
+        # for configuring application settings of static web app,
+        # we need the 'azapi' provider
+        # noqa: E501 https://stackoverflow.com/questions/70081845/azure-static-web-app-application-settings-using-terraform
         ResourceAction(
             scope=self,
             id_="spa_application_settings",
@@ -135,7 +132,7 @@ class InfraStack(TerraformStack):
                     "properties": {
                         "AZURE_CLIENT_ID": sp.application_id,
                         "AZURE_CLIENT_SECRET": aad_application_pw.value,
-                        "APPLICATIONINSIGHTS_CONNECTION_STRING": self.app_insights.connection_string
+                        "APPLICATIONINSIGHTS_CONNECTION_STRING": self.app_insights.connection_string,  # noqa: E501
                     },
                     "kind": "appsettings",
                 }
@@ -189,12 +186,9 @@ class InfraStack(TerraformStack):
             subscription_id=self.config.arm_subscription_id,
         )
 
-        GithubProvider(
-            scope=self, id="github_provider", token=self.config.github_token
-        )
+        GithubProvider(scope=self, id="github_provider", token=self.config.github_token)
 
     def setup_github(self, api_key: str):
-
         ActionsSecret(
             scope=self,
             id_="github_actions_secret",
@@ -205,9 +199,9 @@ class InfraStack(TerraformStack):
 
 
 if __name__ == "__main__":
-    config = InfraConfig()
+    config: InfraConfig = InfraConfig()
 
-    app = App()
+    app: App = App()
     InfraStack(app, config=config, id_="spa-infra")
 
     app.synth()
