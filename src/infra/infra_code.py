@@ -1,6 +1,5 @@
 #!/usr/bin/env python
 import json
-import os
 from pathlib import Path
 
 from azapi.provider import AzapiProvider
@@ -45,6 +44,7 @@ class InfraStack(TerraformStack):
             name="mystaticsite",
             resource_group_name=self.config.resource_group_name,
             sku_tier="Standard",
+            sku_size="Standard"
         )
 
         spa_domain: str = static_site.default_host_name
@@ -54,9 +54,7 @@ class InfraStack(TerraformStack):
             id_="spa_aad_app_johannes",
             display_name="spa_aad_app_johannes",
             web=ApplicationWeb(
-                redirect_uris=[
-                    f"https://{spa_domain}/.auth/login/aad/callback"
-                ],
+                redirect_uris=[f"https://{spa_domain}/.auth/login/aad/callback"],
                 implicit_grant={
                     "access_token_issuance_enabled": True,
                     "id_token_issuance_enabled": True,
@@ -120,15 +118,8 @@ class InfraStack(TerraformStack):
             ),
         )
 
-        # GITHUB COMPONENTS FOR CI/CD Pipeline from linked github repository
-
-        workflow_template_path = (
-            root_path / "data" / "github_cicd_template.yaml"
-        )
-
         self.setup_github(
             api_key=static_site.api_key,
-            workflow_template_path=workflow_template_path,
         )
 
     def setup_providers_and_backend(self):
@@ -178,30 +169,14 @@ class InfraStack(TerraformStack):
             scope=self, id="github_provider", token=self.config.token_for_github
         )
 
-    def setup_github(self, api_key: str, workflow_template_path: Path):
-        file_contents = workflow_template_path.read_text()
+    def setup_github(self, api_key: str):
 
-        actions_secret = ActionsSecret(
+        ActionsSecret(
             scope=self,
             id_="github_actions_secret",
-            repository=self.config.github_repository_name,
+            repository=self.config.github_repo_name,
             secret_name="AZURE_STATIC_WEB_APP_API_TOKEN",
             plaintext_value=api_key,
-        )
-
-        # commit only when template file changes
-        RepositoryFile(
-            scope=self,
-            id_="github_workflow_file",
-            repository=self.config.github_repository_name,
-            branch="cicd/infra",  # TODO: remaster to always push to current branch
-            file=".github/workflows/azure-static-web-app.yaml",
-            content=file_contents,
-            commit_message="Add workflow (by terraform)",
-            commit_author="Patrick Strasser",
-            commit_email="p.strasser@dmesh.io",
-            overwrite_on_create=True,
-            depends_on=[actions_secret]
         )
 
 
