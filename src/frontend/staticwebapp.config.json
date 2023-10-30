@@ -20,7 +20,7 @@
     "identityProviders": {
       "azureActiveDirectory": {
         "registration": {
-          "openIdIssuer": "https://login.microsoftonline.com/5d65bff5-aca6-4063-9d75-44a22ca02ddf/v2.0",
+          "openIdIssuer": "https://login.microsoftonline.com/{{AZURE_TENANT_ID}}/v2.0",
           "clientIdSettingName": "AZURE_CLIENT_ID",
           "clientSecretSettingName": "AZURE_CLIENT_SECRET"
         }
@@ -29,5 +29,8 @@
   },
   "platform": {
     "apiRuntime": "python:3.10"
+  },
+  "navigationFallback": {
+    "rewrite": "/index.html"
   }
 }
