@@ -29,8 +29,5 @@
   },
   "platform": {
     "apiRuntime": "python:3.10"
-  },
-  "navigationFallback": {
-    "rewrite": "/index.html"
   }
 }
