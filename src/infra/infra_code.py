@@ -153,6 +153,7 @@ class InfraStack(TerraformStack):
         )
 
     def setup_providers_and_backend(self):
+        # remote azure backend
         AzurermBackend(
             scope=self,
             subscription_id=self.config.arm_subscription_id,
@@ -164,7 +165,7 @@ class InfraStack(TerraformStack):
             client_id=self.config.terraform_arm_client_id,
             client_secret=self.config.terraform_arm_client_secret,
         )
-
+        # "normal" azure provider for most of the resources
         AzurermProvider(
             scope=self,
             id="azurerm_provider",
@@ -176,7 +177,8 @@ class InfraStack(TerraformStack):
             skip_provider_registration=True,
         )
 
-        # ad app registration und service principal
+        # Active directory specific resources need 
+        # a different resource provider
         AzureadProvider(
             scope=self,
             id="spa_azuread_provider",
@@ -185,7 +187,8 @@ class InfraStack(TerraformStack):
             tenant_id=self.config.arm_tenant_id,
         )
 
-        # for editing application settings in static web page
+        # App registration configuration can currently only be done by
+        # az api provider
         AzapiProvider(
             scope=self,
             id="spa_azapi_provider",
@@ -195,6 +198,8 @@ class InfraStack(TerraformStack):
             subscription_id=self.config.arm_subscription_id,
         )
 
+        # github provider is needed for connecting azure webapp with github codebase
+        # for automatic cicd pipeline
         GithubProvider(scope=self, id="github_provider", token=self.config.github_token)
 
     def setup_github(self, api_key: str):
