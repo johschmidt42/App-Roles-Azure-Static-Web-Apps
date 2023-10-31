@@ -40,5 +40,3 @@
 ### Further manual steps
 
 - You need to add two secrets to your github repository. Go to your GitHub repository -> Settings -> Secrets and Variables -> Actions and click on `new repository secret`. Name it `ARM_TENANT_ID` and enter the tenant uuid here. 
-
-- Create another secret and name it `AZURE_STATIC_WEB_APP_API_TOKEN`. This is necessary so that github actions has access for webapp deployment. Go to your deployed static website resource in azure portal and then click on `manage deployment token` and copy the value and paste it into github.
