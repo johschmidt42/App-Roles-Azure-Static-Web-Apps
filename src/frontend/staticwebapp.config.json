@@ -23,7 +23,7 @@
               "clientSecretSettingName": "AADB2C_PROVIDER_CLIENT_SECRET"
             },
             "openIdConnectConfiguration": {
-              "wellKnownOpenIdConfiguration": "https://{{TENANT_NAME}}.b2clogin.com/{{TENANT_NAME}}.onmicrosoft.com/B2C_1_signupsignin1/v2.0/.well-known/openid-configuration"
+              "wellKnownOpenIdConfiguration": "https://{{AZURE_TENANT_ID}}.b2clogin.com/{{AZURE_TENANT_ID}}.onmicrosoft.com/B2C_1_signupsignin1/v2.0/.well-known/openid-configuration"
             }
           },
           "login": {
