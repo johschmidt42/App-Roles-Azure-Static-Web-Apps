@@ -47,6 +47,9 @@ class InfraStack(TerraformStack):
 
         spa_domain: str = static_site.default_host_name
 
+        """
+        Log analytics workspace and app insights enable logging your applications state
+        """
         self.log_analytics_workspace: LogAnalyticsWorkspace = LogAnalyticsWorkspace(
             scope=self,
             id_="log_analytics_ws",
@@ -67,6 +70,10 @@ class InfraStack(TerraformStack):
             retention_in_days=30,
         )
 
+        """
+        App registration is configured to redirect back to static web app successful after authentication
+        Application app roles are created that can later be assigned to users. Its ids can be chosen randomly.
+        """
         aad_application: Application = Application(
             scope=self,
             id_="spa_aad_app_johannes",
@@ -98,6 +105,7 @@ class InfraStack(TerraformStack):
             depends_on=[static_site],
         )
 
+        # client_secret creation for app registration
         aad_application_pw: ApplicationPassword = ApplicationPassword(
             scope=self,
             id_="application_pw",
@@ -105,8 +113,9 @@ class InfraStack(TerraformStack):
             display_name="app pw",
         )
 
-        # tags are required for the enterprise application
-        # because we manage user access to app roles in the enterprise application
+        # Creation of Service principal / entrerprise application entry
+        # without the tags, there would not be an entry in enterprise application
+        # this shows that it is possible to create a service principal without enterprise application entry
         sp = ServicePrincipal(
             scope=self,
             id_="service_principal",
@@ -189,6 +198,10 @@ class InfraStack(TerraformStack):
         GithubProvider(scope=self, id="github_provider", token=self.config.github_token)
 
     def setup_github(self, api_key: str):
+
+        # github is connected to azure static site by the AZURE_STATIC_WEB_APP_API_TOKEN
+        # which is used to authorize github when deploying code changes to azure
+        # it needs to be in github.secrets and is used in the cicd pipeline
         ActionsSecret(
             scope=self,
             id_="github_actions_secret",
