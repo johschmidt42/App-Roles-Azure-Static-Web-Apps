@@ -46,7 +46,7 @@ function App() {
             </Link>
 
             <Button margin={2}>
-              {!authenticated ? <a href="/.auth/login/aad">Login</a> : <a href="/.auth/logout">Logout</a>}
+              {!authenticated ? <a href="/.auth/login/aadb2c">Login</a> : <a href="/.auth/logout">Logout</a>}
             </Button>
           </TabList>
           <TabPanels flexDir="column" marginTop={7}>
