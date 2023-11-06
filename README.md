@@ -47,7 +47,27 @@
 
 Authentication is done by creating a user flow in the b2c tenant. This user flow is then referenced in `staticwebapp.config.json` as a part of the login url. An alternative to user flow (that offer solutions for the most common scenarios as login, registration, user edit, ...), [custom policies](https://learn.microsoft.com/en-us/azure/active-directory-b2c/custom-policy-overview) can be used.
 
-It is shown [here](https://learn.microsoft.com/en-us/azure/active-directory-b2c/user-flow-custom-attributes?pivots=b2c-user-flow) how to add custom claim attributes. The datatypes can be of type string, boolean or integer. These custom attributes can also be created and managed via Graph API. 
+It is shown [here](https://learn.microsoft.com/en-us/azure/active-directory-b2c/user-flow-custom-attributes?pivots=b2c-user-flow) how to add custom claim attributes. The datatypes can be of type string, boolean or integer. These custom attributes can also be created and managed via Graph API.
+
+## Access Control
+
+Users that registered to the b2c tenant by the login/signup flow are shown in Entra ID users tab. Although they appear to be full users and can also log into the portal (with read-only and a very short ttl token) with the url `https://portal.azure.com/{b2c-tenant-name}.onmicrosoft.com`, these users are classified as consumer users and can only use the tenant for authorization. They have no possibility to access resources. Read [here](https://learn.microsoft.com/en-us/azure/active-directory-b2c/user-overview#consumer-user) for more. If you go to entra id -> users, you see all consumer users (they have source set to Azure Active Directory) and admin / guest users (with source External Active Directory). That being said, the tenant settings for users (found under entra id -> user settings) do not apply to consumer users.
+
+## Role Management
+
+Out of the box, Azure B2C tenants don't support app roles, but you can write them into the manifest. This was mentioned [here](https://learn.microsoft.com/en-us/answers/questions/799654/assign-app-roles-to-ad-users-in-ad-b2c). Although, after exploration and finding [this](https://learn.microsoft.com/en-us/answers/questions/947710/create-app-roles-in-app-registration-and-assign-th), the app roles do not seem to affect / target the consumer users of the user flows. App roles seems not to be the tool of choice for access control in Azure B2C.
+
+### 1. Solution: managed azure function
+An alternative is described [here](https://www.youtube.com/watch?v=C9qN6QqnxQ8&ab_channel=SSWTV%7CVideosfordevelopers%2Cbydevelopers). By creating custom policies, the app returns a role claim attribute that is filled with data by an azure function. 
+
+
+### 2. Solution: Azure Graph API
+Furthermore, use the Microsoft Graph API to set the value of a custom claim to specific roles: [here](https://clintmcmahon.com/add-role-claims-to-an-azure-b2c-user-flow-access-token/).
+
+
+## 3. Solution
+Use the GetRoles endpoint in the backend. The GetRoles endpoints gets user id information as well as tenant and can ask the microsoft API in which groups the user is present. Example mapping:  "Set the role to admin if user is in Admin group". This is similar to this one: [click](https://learn.microsoft.com/en-us/azure/static-web-apps/assign-roles-microsoft-graph)
+
 
 ## Add Github Oauth Identity Provider
 [full link](https://learn.microsoft.com/en-us/azure/active-directory-b2c/identity-provider-github?pivots=b2c-user-flow)
@@ -85,7 +105,7 @@ Creating a B2C tenant with a service principal is not possible with service prin
 # todo:
 
 - [x] infra code
-- [ ] b2c tenant settings ([here](https://learn.microsoft.com/en-us/entra/fundamentals/users-default-permissions#restrict-member-users-default-permissions))
+- [x] b2c tenant settings ([here](https://learn.microsoft.com/en-us/entra/fundamentals/users-default-permissions#restrict-member-users-default-permissions))
 - [x] google identity provider
 - [x] microsoft identity provider
 - [x] custom policies ([here](https://learn.microsoft.com/en-us/azure/active-directory-b2c/custom-policy-overview))
