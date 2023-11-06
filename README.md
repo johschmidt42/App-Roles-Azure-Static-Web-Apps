@@ -40,3 +40,38 @@
 ### Further manual steps
 
 - You need to add two secrets to your github repository. Go to your GitHub repository -> Settings -> Secrets and Variables -> Actions and click on `new repository secret`. Name it `ARM_TENANT_ID` and enter the tenant uuid here. 
+
+# Azure B2C Tenant Documentation
+
+## Authentication
+
+Authentication is done by creating a user flow in the b2c tenant. This user flow is then referenced in `staticwebapp.config.json` as a part of the login url. An alternative to user flow (that offer solutions for the most common scenarios as login, registration, user edit, ...), [custom policies](https://learn.microsoft.com/en-us/azure/active-directory-b2c/custom-policy-overview) can be used.
+
+It is shown [here](https://learn.microsoft.com/en-us/azure/active-directory-b2c/user-flow-custom-attributes?pivots=b2c-user-flow) how to add custom claim attributes. The datatypes can be of type string, boolean or integer. These custom attributes can also be created and managed via Graph API. 
+
+## Add Github Oauth Identity Provider
+[full link](https://learn.microsoft.com/en-us/azure/active-directory-b2c/identity-provider-github?pivots=b2c-user-flow)
+
+1. Create app registration within your github account [here](https://github.com/settings/developers). For callback url, use `<your-webapp-url>oauth2/authresp`. Save the `GITHUB_CLIENT_ID` and `GITHUB_CLIENT_SECRET`.
+2. Go to Azure B2C -> Identity Provider -> Github -> create with the client id and secret.
+3. Create new user flow or edit existing user flow and incorporate github as identity provider
+
+cba0ac739e5df62447ef
+52b9f0cf912340d1e29b254f5aaebe1a6a9a00ab
+
+##### Custom Claims Creation
+
+Go to your Azure B2C tenant -> User Attributes -> Add
+
+
+#### Custom Claims Usage
+
+Go to your user flow -> Check new attributes
+
+
+# todo:
+
+- [ ] infra code
+- [ ] b2c tenant settings
+- [x] custom claims
+- [x] github identity provider
