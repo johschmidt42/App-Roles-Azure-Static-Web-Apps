@@ -56,6 +56,20 @@ It is shown [here](https://learn.microsoft.com/en-us/azure/active-directory-b2c/
 2. Go to Azure B2C -> Identity Provider -> Github -> create with the client id and secret.
 3. Create new user flow or edit existing user flow and incorporate github as identity provider
 
+## Add Microsoft personal account identity provider [here](https://learn.microsoft.com/en-us/azure/active-directory-b2c/identity-provider-microsoft-account?pivots=b2c-user-flow)
+
+1. Create new app registration (entra id -> app registrations -> specify personal (and others) under supported account types)
+2. create client secret and copy id, secret
+3. specify same redirect uri (for type web) as in github
+
+## Add Google Identity Provider
+
+1. go to [google developer console](https://console.developers.google.com/)
+2. create or select project (you need one)
+3. select api & services on the left side
+4. credentials -> create credentials -> oauth client id (with application type web)
+5. for redirect uri, enter same url as for github and save client id and client secret.
+
 ##### Custom Claims Creation
 
 Go to your Azure B2C tenant -> User Attributes -> Add
@@ -71,6 +85,11 @@ Creating a B2C tenant with a service principal is not possible with service prin
 # todo:
 
 - [x] infra code
-- [ ] b2c tenant settings
+- [ ] b2c tenant settings ([here](https://learn.microsoft.com/en-us/entra/fundamentals/users-default-permissions#restrict-member-users-default-permissions))
+- [x] google identity provider
+- [x] microsoft identity provider
+- [x] custom policies ([here](https://learn.microsoft.com/en-us/azure/active-directory-b2c/custom-policy-overview))
+- [ ] access control in b2c([here](https://learn.microsoft.com/en-us/azure/active-directory-b2c/manage-user-access))
+- [ ] lifecycle control ([here](https://learn.microsoft.com/en-us/entra/id-governance/lifecycle-workflows-deployment))
 - [x] custom claims
 - [x] github identity provider
