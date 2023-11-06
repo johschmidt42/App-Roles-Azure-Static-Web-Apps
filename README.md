@@ -52,7 +52,7 @@ It is shown [here](https://learn.microsoft.com/en-us/azure/active-directory-b2c/
 ## Add Github Oauth Identity Provider
 [full link](https://learn.microsoft.com/en-us/azure/active-directory-b2c/identity-provider-github?pivots=b2c-user-flow)
 
-1. Create app registration within your github account [here](https://github.com/settings/developers). For callback url, use `<your-webapp-url>oauth2/authresp`. Save the `GITHUB_CLIENT_ID` and `GITHUB_CLIENT_SECRET`.
+1. Create app registration within your github account [here](https://github.com/settings/developers). For callback url, use `https://your-tenant-name.b2clogin.com/your-tenant-name.onmicrosoft.com/oauth2/authresp`. Save the `GITHUB_CLIENT_ID` and `GITHUB_CLIENT_SECRET`.
 2. Go to Azure B2C -> Identity Provider -> Github -> create with the client id and secret.
 3. Create new user flow or edit existing user flow and incorporate github as identity provider
 
@@ -64,10 +64,13 @@ Go to your Azure B2C tenant -> User Attributes -> Add
 
 Go to your user flow -> Check new attributes
 
+#### Infra Code
+
+Creating a B2C tenant with a service principal is not possible with service principal credentials ([here](https://learn.microsoft.com/en-us/answers/questions/1298957/can-you-create-an-azure-b2c-tenant-with-a-service)). Furthermore, many resources like [user flows](https://github.com/hashicorp/terraform-provider-azuread/issues/175) are currently not supported by terrform az providers.
 
 # todo:
 
-- [ ] infra code
+- [x] infra code
 - [ ] b2c tenant settings
 - [x] custom claims
 - [x] github identity provider
