@@ -14,6 +14,7 @@
     }
   ],
   "auth": {
+    "rolesSource": "/api/GetRoles",
     "identityProviders": {
       "customOpenIdConnectProviders": {
         "aadb2c": {
