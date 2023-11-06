@@ -56,9 +56,6 @@ It is shown [here](https://learn.microsoft.com/en-us/azure/active-directory-b2c/
 2. Go to Azure B2C -> Identity Provider -> Github -> create with the client id and secret.
 3. Create new user flow or edit existing user flow and incorporate github as identity provider
 
-cba0ac739e5df62447ef
-52b9f0cf912340d1e29b254f5aaebe1a6a9a00ab
-
 ##### Custom Claims Creation
 
 Go to your Azure B2C tenant -> User Attributes -> Add
