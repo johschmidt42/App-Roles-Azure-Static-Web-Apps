@@ -60,8 +60,7 @@ It is shown [here](https://learn.microsoft.com/en-us/azure/active-directory-b2c/
 
 Go to your Azure B2C tenant -> User Attributes -> Add
 
-
-#### Custom Claims Usage
+##### Custom Claims Usage
 
 Go to your user flow -> Check new attributes
 
