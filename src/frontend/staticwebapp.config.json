@@ -1,0 +1,34 @@
+{
+  "routes": [
+    {
+      "route": "/api/user",
+      "allowedRoles": [
+        "user"
+      ]
+    },
+    {
+      "route": "/api/master",
+      "allowedRoles": [
+        "admin"
+      ]
+    }
+  ],
+  "auth": {
+    "rolesSource": "/api/GetRoles",
+    "identityProviders": {
+      "azureActiveDirectory": {
+        "registration": {
+          "openIdIssuer": "https://login.microsoftonline.com/{{AZURE_TENANT_ID}}/v2.0",
+          "clientIdSettingName": "AZURE_CLIENT_ID",
+          "clientSecretSettingName": "AZURE_CLIENT_SECRET"
+        }
+      }
+    }
+  },
+  "platform": {
+    "apiRuntime": "python:3.10"
+  },
+  "navigationFallback": {
+    "rewrite": "/index.html"
+  }
+}
