@@ -5,7 +5,7 @@ on:
     branches:
       - main
   pull_request:
-    types: [opened, synchronize, reopened, closed]
+    types: [ opened, synchronize, reopened, closed ]
     branches:
       - main
 
@@ -13,25 +13,34 @@ jobs:
   build_and_deploy_job:
     if: github.event_name == 'push' || (github.event_name == 'pull_request' && github.event.action != 'closed')
     runs-on: ubuntu-latest
-    name: Build and Deploy Job
+    name: Build and deploy Job
     steps:
       - uses: actions/checkout@v3
         with:
           submodules: true
-      - name: Replace openIdIssuer Placeholder with TenantId
+      - name: Replace placeholder in staticwebapp.config.json
         run: |
-          sed  -i "s/{{TENANT_NAME}}/${{ secrets.TENANT_NAME }}/g" src/frontend/staticwebapp.config.json
-      - name: Build And Deploy
+          sed  -i "s/{{ TENANT_NAME }}/${{ secrets.TENANT_NAME }}/g" src/frontend/staticwebapp.config.json
+          sed  -i "s/{{ B2CPolicy }}/${{ secrets.B2CPolicy }}/g" src/frontend/staticwebapp.config.json
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: 3.10
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - name: Build and deploy
         id: builddeploy
         uses: Azure/static-web-apps-deploy@v1
         with:
-          azure_static_web_apps_api_token: ${{ secrets.AZURE_STATIC_WEB_APP_API_TOKEN }}
-          repo_token: ${{ secrets.GITHUB_TOKEN }} # Used for Github integrations (i.e. PR comments)
+          azure_static_web_apps_api_token: $${{ secrets.AZURE_STATIC_WEB_APP_API_TOKEN }}
+          repo_token: $${{ secrets.GITHUB_TOKEN }} # Used for GitHub integrations (i.e. PR comments)
           action: 'upload'
           ###### Repository/Build Configurations - These values can be configured to match your app requirements. ######
           # For more information regarding Static Web App workflow configurations, please visit: https://aka.ms/swaworkflowconfig
           app_location: '/src/frontend' # App source code path
-          api_location: '/src/backend_v2' # Api source code path - optional
+          api_location: '/src/backend' # Api source code path - optional
           output_location: 'build' # Built app content directory - optional
           ###### End of Repository/Build Configurations ######
 
@@ -44,5 +53,5 @@ jobs:
         id: closepullrequest
         uses: Azure/static-web-apps-deploy@v1
         with:
-          azure_static_web_apps_api_token: ${{ secrets.AZURE_STATIC_WEB_APP_API_TOKEN }}
+          azure_static_web_apps_api_token: $${{ secrets.AZURE_STATIC_WEB_APP_API_TOKEN }}
           action: 'close'

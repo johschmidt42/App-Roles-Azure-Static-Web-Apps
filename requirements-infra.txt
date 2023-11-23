@@ -1,5 +1,0 @@
-cdktf
-cdktf-cdktf-provider-azurerm
-cdktf-cdktf-provider-azuread
-cdktf-cdktf-provider-github
-pydantic-settings

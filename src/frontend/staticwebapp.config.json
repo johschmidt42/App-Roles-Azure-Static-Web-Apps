@@ -1,15 +1,21 @@
 {
   "routes": [
     {
+      "route": "/api/env",
+      "allowedRoles": [
+        "authenticated"
+      ]
+    },
+    {
       "route": "/api/user",
       "allowedRoles": [
-        "user"
+        "authenticated"
       ]
     },
     {
       "route": "/api/master",
       "allowedRoles": [
-        "admin"
+        "authenticated"
       ]
     }
   ],
@@ -23,7 +29,7 @@
               "clientSecretSettingName": "AADB2C_PROVIDER_CLIENT_SECRET"
             },
             "openIdConnectConfiguration": {
-              "wellKnownOpenIdConfiguration": "https://{{TENANT_NAME}}.b2clogin.com/{{TENANT_NAME}}.onmicrosoft.com/B2C_1_signinsingup_with_email_github/v2.0/.well-known/openid-configuration"
+              "wellKnownOpenIdConfiguration": "https://{{ TENANT_NAME }}.b2clogin.com/{{ TENANT_NAME }}.onmicrosoft.com/{{ B2CPolicy }}/v2.0/.well-known/openid-configuration"
             }
           },
           "login": {

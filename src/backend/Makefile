@@ -26,5 +26,5 @@ start-azurite: ## start azurite
 	@azurite --location /tmp/azurite --debug /tmp/azurite/debug.log
 
 .PHONY:
-start-func: ## start azurite
+start-func: ## start function
 	@func start
